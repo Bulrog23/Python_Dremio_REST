@@ -3,25 +3,27 @@ import requests
 import getToken
 import json
 
-#tablePath = "/media/jonas/TOSHIBA EXT/Jonas/public_bi_benchmark-master/benchmark/Arade/tables/Arade_1.table.sql"
+# Path wo Table dateien sind
 benchmarkPath = "/media/jonas/TOSHIBA EXT/Jonas/public_bi_benchmark-master/benchmark"
 
 # mit allen Daten
-# datenPath = "/media/jonas/TOSHIBA EXT/Jonas/daten/PublicBIbenchmark"
+datenPath = "/media/jonas/TOSHIBA EXT/Jonas/daten/PublicBIbenchmark"
 
-#testData
-datenPath = "/media/jonas/TOSHIBA EXT/Jonas/testDaten"
+# mit nur Testdaten
+#datenPath = "/media/jonas/TOSHIBA EXT/Jonas/testDaten"
+
 nas = "allData" #NAS Name in Dremio
+hostAdresse = "http://141.76.47.15:9047" #Dirk
+#hostAdresse = "http://localhost:9047" #mein Adresse local
 
-gotToken = json.loads(getToken.getToken())
+gotToken = json.loads(getToken.getToken(hostAdresse))
 token = str(gotToken.get('token'))
-#token = "5kudnld31e18pbhtongp6dpkff"
-
 
 # convertiert alle zu PDS
-def convertpds(i2, x2, nas, token):
-    # url = "http://localhost:9047/api/v3/catalog/dremio%3A%2Ftest%2FTelco%2FTelco_1.csv.bz2"
-    url = "http://localhost:9047/api/v3/catalog/"
+def convertpds(i2, x2, nas, token, hostAdresse):
+    # Beispiel-url = "http://localhost:9047/api/v3/catalog/dremio%3A%2Ftest%2FTelco%2FTelco_1.csv.bz2"
+    url = hostAdresse+"/api/v3/catalog/"
+
     id = "dremio%3A%2F"
     id += nas + "%2F"  # Name-NAS folder
     id += i2 + "%2F"
@@ -63,13 +65,10 @@ def convertpds(i2, x2, nas, token):
     print(response.text)
     # print(payload)
 
-
-# convertPDS("Telco", "Telco_1.csv.bz2", "test")
-
 arr = os.listdir(datenPath)
 for i in arr:
     tablePath2 = datenPath + "/" + i
     arr2 = os.listdir(
         tablePath2)  # Array von allen table files pro ordner['CityMaxCapita_1.table.sql']['CMSprovider_1.table.sql', 'CMSprovider_2.table.sql']
     for x in arr2:
-        convertpds(i, x, nas, token)
+        convertpds(i, x, nas, token, hostAdresse)

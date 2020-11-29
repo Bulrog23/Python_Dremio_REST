@@ -1,13 +1,16 @@
+import json
 import requests
+import getToken
 
-# import json
-# id_job = "204dbb37-3c84-bc0f-d747-fb03b4e7b200"
-token = "5g6cnsmflbl34vhjs9apqquae8"
+hostAdresse = "http://141.76.47.15:9047" #Dirk
+#hostAdresse = "http://localhost:9047" #mein Adresse local
 
+gotToken = json.loads(getToken.getToken(hostAdresse))
+token = str(gotToken.get('token'))
 
 # schmeißt error
-def get_allreflections(token):
-    url = "http://localhost:9047/api/v3/reflection"
+def get_allreflections(token, hostadresse):
+    url = hostadresse+"/api/v3/reflection"
     headers = {
         'Authorization': "_dremio" + token,
         'Content-Type': "application/json",
@@ -18,5 +21,4 @@ def get_allreflections(token):
     print(response.text)
     return response.text
 
-
-get_allreflections(token)
+get_allreflections(token, hostAdresse)

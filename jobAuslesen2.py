@@ -5,10 +5,13 @@ import getJob
 import getReflection
 # json.dumps() json->string
 # json.loads() string->json
-# token = "10p2mmuo4ssl5qm9ehqafmbr67"
 # path = "/media/jonas/TOSHIBA EXT/Jonas/Skripte/queueJobIDTable.json"
 # path = "/media/jonas/TOSHIBA EXT/Jonas/Skripte/testDurchlaufJobs/RAW.json"
-def jobAuslesen2(pathJobIdTable, token, speicherPath):
+#hostAdresse = "http://141.76.47.15:9047" #Dirk
+#hostAdresse = "http://localhost:9047" #mein Adresse local
+# gotToken = json.loads(getToken.getToken(hostAdresse))
+# token = str(gotToken.get('token'))
+def jobAuslesen2(pathJobIdTable, token, speicherPath, hostAdresse):
     queueJobIDTable = open(pathJobIdTable)
     # als json
     data_json = json.load(queueJobIDTable)# json.load() für keine strings
@@ -24,7 +27,7 @@ def jobAuslesen2(pathJobIdTable, token, speicherPath):
         ausgebenDaten+=k
         # print("Key: " + k) # Key: Arade_1_NR2.sql
         # print("Value: " + str(v)) # Value(id): 204da5df-f450-d332-1865-b829a8fd8400
-        job_profil = getJob.get_job(v, token)
+        job_profil = getJob.get_job(v, token, hostAdresse)
         # print("HERE us: "+job_profil) #{"jobState":"COMPLETED","rowCount":100,"errorMessage":"","startedAt":"2020-11-16T10:53:22.896Z","endedAt":"2020-11-16T10:53:23.423Z","queryType":"REST","queueName":"LARGE","queueId":"LARGE","resourceSchedulingStartedAt":"2020-11-16T10:53:23.079Z","resourceSchedulingEndedAt":"2020-11-16T10:53:23.095Z","cancellationReason":""}
         #AGG&RAW
         #{"jobState":"COMPLETED","rowCount":130,"errorMessage":"","startedAt":"2020-11-17T10:29:20.367Z","endedAt":"2020-11-17T10:29:24.830Z","acceleration":{"reflectionRelationships":[{"datasetId":"dc88e753-ebd7-4e0d-ad76-d0ca9e7c6323","reflectionId":"2329c428-8c4a-4f2c-8454-cc145bba9a6a","relationship":"CONSIDERED"},{"datasetId":"dc88e753-ebd7-4e0d-ad76-d0ca9e7c6323","reflectionId":"008e40a7-9bf1-4ffb-a285-5207f4b28607","relationship":"CHOSEN"}]},"queryType":"REST","queueName":"SMALL","queueId":"SMALL","resourceSchedulingStartedAt":"2020-11-17T10:29:20.831Z","resourceSchedulingEndedAt":"2020-11-17T10:29:20.839Z","cancellationReason":""}
@@ -52,7 +55,7 @@ def jobAuslesen2(pathJobIdTable, token, speicherPath):
                     reflectionID1 = job_profil_json['acceleration']['reflectionRelationships'][i]['reflectionId']
                     reflectionChoosen1 = job_profil_json['acceleration']['reflectionRelationships'][i]['relationship']
                     # print("erste Reflection: "+getReflection.get_reflection(reflectionID1, token))
-                    acc1Job = json.loads(getReflection.get_reflection(reflectionID1, token))
+                    acc1Job = json.loads(getReflection.get_reflection(reflectionID1, token, hostAdresse))
                     #BSP-refl: {"id":"0fc64806-0a09-4cf4-83b2-808f472bbdfa","type":"AGGREGATION","name":"Aggregation Reflection","tag":"nV/W2xgzRcY=","createdAt":"2020-11-16T16:36:03.008Z","updatedAt":"2020-11-16T16:36:03.008Z","datasetId":"f22d3ac8-2159-485c-8df7-036d62259fba","currentSizeBytes":0,"totalSizeBytes":0,"enabled":false,"arrowCachingEnabled":false,"status":{"config":"OK","refresh":"SCHEDULED","availability":"NONE","combinedStatus":"DISABLED","failureCount":0,"lastDataFetch":"1970-01-01T00:00:00.000Z","expiresAt":"1970-01-01T00:00:00.000Z"},"dimensionFields":[{"name":"F6","granularity":"DATE"},{"name":"F7","granularity":"DATE"},{"name":"Number of Records","granularity":"DATE"},{"name":"F3","granularity":"DATE"},{"name":"F1","granularity":"DATE"},{"name":"WNET (bin)","granularity":"DATE"},{"name":"F2","granularity":"DATE"}],"measureFields":[{"name":"F9","measureTypeList":["COUNT","SUM"]},{"name":"F4","measureTypeList":["COUNT","SUM"]},{"name":"F8","measureTypeList":["COUNT","SUM"]},{"name":"F5","measureTypeList":["COUNT","SUM"]}],"partitionDistributionStrategy":"CONSOLIDATED","entityType":"reflection"}
                     #acc1Size = acc1Job['totalSizeBytes']
                     reflectionName = acc1Job['name']

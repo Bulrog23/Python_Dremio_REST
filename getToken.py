@@ -1,11 +1,20 @@
 import requests
 
-def getToken():
-    url = "http://localhost:9047/apiv2/login"
-    payload = '''{
-      "userName": "dremio",
-      "password": "dremio123"
-    }'''
+def getToken(hostAdresse):
+    # mein Server
+    if(hostAdresse=="http://localhost:9047"):
+        url = "http://localhost:9047/apiv2/login"
+        payload = '''{
+              "userName": "dremio",
+              "password": "dremio123"
+        }'''
+    else:#(hostAdresse=="http://141.76.47.15:9047"):
+        # Dirk Server
+        url = hostAdresse+"/apiv2/login"
+        payload = '''{
+          "userName": "greim",
+          "password": "greim45$"
+        }'''
     headers = {
         'Content-Type': "application/json",
         'cache-control': "no-cache",

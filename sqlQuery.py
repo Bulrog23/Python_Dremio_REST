@@ -10,13 +10,16 @@ mappingIDqueries = dict()
 datenPath = "/media/jonas/TOSHIBA EXT/Jonas/testQuery"
 path = "/media/jonas/TOSHIBA EXT/Jonas/Skripte/" #ZwischenSpeicher für MappingQueryId.json
 speicherPath = "/media/jonas/TOSHIBA EXT/Jonas/Skripte/testDurchlaufJobs/" #Speicherort der auswertungsFiles
-abfrageZeitServer = 30 #30 sec abfragenOb query completed
+abfrageZeitServer = 30 #30 sec abfragecycle ob query completed
 
-gotToken = json.loads(getToken.getToken())
+hostAdresse = "http://141.76.47.15:9047" #Dirk
+#hostAdresse = "http://localhost:9047" #mein Adresse local
+
+gotToken = json.loads(getToken.getToken(hostAdresse))
 token = gotToken.get('token')
 
-def sqlquerie(payload, tableNameNumber, token, abfrageZeit):
-    url = "http://localhost:9047/api/v3/sql"
+def sqlquerie(payload, tableNameNumber, token, abfrageZeit, hostAdresse):
+    url = hostAdresse+"/api/v3/sql"
     headers = {
         'Authorization': "_dremio" + token,
         'Content-Type': "application/json",
@@ -31,12 +34,12 @@ def sqlquerie(payload, tableNameNumber, token, abfrageZeit):
         'id')  # added Eintrag zu dic wenn tableNameNr(key) noch nicht vorhanden
     print(mappingIDqueries)
     # getJob.get_job(response_native.get('id'), token)
-    response_job = json.loads(getJob.get_job(response_native.get('id'), token))
+    response_job = json.loads(getJob.get_job(response_native.get('id'), token, hostAdresse))
     # print(response_job.get('jobState'))
     status_job = response_job.get('jobState')
     while status_job != "COMPLETED" and status_job != "CANCELED" and status_job != "FAILED":
         time.sleep(abfrageZeit)
-        response_job = json.loads(getJob.get_job(response_native.get('id'), token))
+        response_job = json.loads(getJob.get_job(response_native.get('id'), token, hostAdresse))
         status_job = response_job.get('jobState')
         print(status_job)
     print("Queue completed")
@@ -58,7 +61,7 @@ for i in arr:
     sqla = "{\n\t\"sql\": \"" + sql_txt.replace("\n",
                                                 "") + "\"\n}"  # muss new line die durch die {} add entsteht entfernen
     # print(sqla)
-    sqlquerie(sqla, i, token, abfrageZeitServer)  # i=fileName=tableName
+    sqlquerie(sqla, i, token, abfrageZeitServer, hostAdresse)  # i=fileName=tableName
 
 #speichert mappingErgebnis(tablenAMeQueryNR, job_id) als json
 path += "queueJobIDTable.json"
@@ -67,4 +70,4 @@ result = json.dumps(mappingIDqueries)
 n = text_file.write(result)
 text_file.close()
 
-jobAuslesen2.jobAuslesen2(path, token, speicherPath)
+jobAuslesen2.jobAuslesen2(path, token, speicherPath, hostAdresse)

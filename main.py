@@ -1,3 +1,5 @@
+#klappt noch nicht
+
 import pyodbc
 host = 'localhost'
 port = 31010

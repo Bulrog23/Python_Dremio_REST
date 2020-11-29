@@ -1,10 +1,15 @@
 import requests
-
 # import json
-# id_job = "204dbb37-3c84-bc0f-d747-fb03b4e7b200"
 
-def get_reflection(id_jo, token):
-    url = "http://localhost:9047/api/v3/reflection/"
+# id_job = "204dbb37-3c84-bc0f-d747-fb03b4e7b200"
+#hostAdresse = "http://141.76.47.15:9047" #Dirk
+#hostAdresse = "http://localhost:9047" #mein Adresse local
+
+#gotToken = json.loads(getToken.getToken())
+#token = str(gotToken.get('token'))
+
+def get_reflection(id_jo, token, hostAdresse):
+    url = hostAdresse+"/api/v3/reflection/"
     url += id_jo
     headers = {
         'Authorization': "_dremio"+token,
