@@ -3,14 +3,19 @@ import json
 import getToken
 from datetime import datetime
 
-#Manuell eingeben
-#wird nur im log/console ausgegeben (nicht in UI)
-#log nicht gefunden -> Manuell abfangen/eingeben
-reflectionBuild_id_job = "203c7bbe-49a0-aca4-5e19-3e955448fa00"
+##Hier werden die Reflection-Build-Zeiten abgefangen
+#Die Job-ID des Reflection-Builds wird nicht in der UI oder in der REST API ausgegeben
+#Die Job ID muss im log/console manuell abgefangen werden (dort wird die ID ausgegeben)
+#ID manuell eingeben unter "reflectionBuild_id_job"
 
-hostAdresse = "http://141.76.47.15:9047" #Dirk
-#hostAdresse = "http://localhost:9047" #mein Adresse local
+#GET /job
+#https://docs.dremio.com/rest-api/jobs/get-job.html
 
+reflectionBuild_id_job = "203c7bbe-49a0-aca4-5e19-3e955448fa00" #hier Job-Id des Reflection-Build eingeben
+
+hostAdresse = "http://localhost:9047" #hier Hostadresse angeben (bei einem Single-Node-Cluster ist dies die Default-Hostadresse)
+
+#hier wird ein Token für die Anfrage erstellt, dass sie über die REST API geschickt werden kann
 gotToken = json.loads(getToken.getToken(hostAdresse))
 token = str(gotToken.get('token'))
 
@@ -27,6 +32,8 @@ def get_reflectionJob(id_jo, token, hostAdresse):
     return response.text
 
 ###reflection build Zeiten auslesen
+#hier wird die JSON-Datei des Reflection-Build-Jobs heruntergeladen
+#Reflection-Zeiten werden ausgelesen -> in Sekunden ausgegeben
 
 print(get_reflectionJob(reflectionBuild_id_job, token, hostAdresse))
 job_profil_json = json.loads(get_reflectionJob(reflectionBuild_id_job, token, hostAdresse))

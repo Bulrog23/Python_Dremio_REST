@@ -1,9 +1,9 @@
 import requests
 
-#example Request withur modifications
+##Wird nicht genutzt
+#Beispiel Request ohne Modifikationen
 
 url = "http://localhost:9047/api/v3/catalog/dremio%3A%2Ftest%2FTelco%2FTelco_1.csv.bz2"
-
 payload = '''{
     "entityType": "dataset",
     "id": "dremio%3A%2Ftest%2FTelco%2FTelco_1.csv.bz2",
@@ -32,7 +32,5 @@ headers = {
     'cache-control': "no-cache",
     'Postman-Token': "e3627456-a277-457f-8734-1bd78658e6df"
     }
-
 response = requests.request("POST", url, data=payload, headers=headers)
-
 print(response.text)

@@ -1,10 +1,14 @@
 import requests
 # import json
 
-# id_job = "204dbb37-3c84-bc0f-d747-fb03b4e7b200"
-#hostAdresse = "http://141.76.47.15:9047" #Dirk
-#hostAdresse = "http://localhost:9047" #mein Adresse local
+##Mit dieser Methode werden die Details einer Reflection abgefragt (als JSON) und zurück gegeben als String
+#GET /reflection/{id}
 
+#https://docs.dremio.com/rest-api/reflections/get-reflection-id.html#syntax
+
+##Kommentare: Falls eine Reflection Manuell abgefragt werden soll
+# id_job = "204dbb37-3c84-bc0f-d747-fb03b4e7b200"
+#hostAdresse = "http://localhost:9047" #Single-Node Adresse
 #gotToken = json.loads(getToken.getToken())
 #token = str(gotToken.get('token'))
 

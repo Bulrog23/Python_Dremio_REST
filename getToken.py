@@ -1,20 +1,31 @@
 import requests
 
+##Hier werden Tokens für die Anfragen erstellt
+#Tokens = wie ein Login für die REST API
+
+#Authentication
+#https://docs.dremio.com/rest-api/overview.html
+
+
 def getToken(hostAdresse):
-    # mein Server
-    if(hostAdresse=="http://localhost:9047"):
-        url = "http://localhost:9047/apiv2/login"
+    url = hostAdresse + "/apiv2/login"
+
+    ##Login-Daten
+    #Bei einem Single-Node-Cluster sind dies die Default-Daten
+    if(hostAdresse=="http://localhost:9047"):#local Server
         payload = '''{
               "userName": "dremio",
               "password": "dremio123"
         }'''
-    else:#(hostAdresse=="http://141.76.47.15:9047"):
-        # Dirk Server
-        url = hostAdresse+"/apiv2/login"
-        payload = '''{
-          "userName": "greim",
-          "password": "greim45$"
-        }'''
+
+    ###hier falls kein Single-Node-Cluster benutzt wird oder Accounts erstellt werden:
+    ##if(hostAdresse=="http://000.00.00.00:9047"): #0er ersetzten durch Adresse
+    ##falls andere Adresse genutzt wird --> auch in Methoden ändern/setzten
+    #    payload = '''{
+    #      "userName": "Hallo",
+    #      "password": "Hallo123"
+    #    }'''
+
     headers = {
         'Content-Type': "application/json",
         'cache-control': "no-cache",
@@ -24,4 +35,3 @@ def getToken(hostAdresse):
     response = requests.request("POST", url, data=payload, headers=headers)
     #print(response.text)
     return response.text
-

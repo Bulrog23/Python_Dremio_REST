@@ -1,8 +1,7 @@
 import requests
-import json
-import getToken
+#import json
+#import getToken
 
-#hostAdresse = "http://141.76.47.15:9047" #Dirk
 #hostAdresse = "http://localhost:9047" #mein Adresse local
 
 #id_job = "203c7bbe-49a0-aca4-5e19-3e955448fa00"
